@@ -1,0 +1,15 @@
+{
+  "name": "emprende-full-stack",
+  "version": "1.0.0",
+  "description": "App Tareas",
+  "main": "index.js",
+  "author": "Jose",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
