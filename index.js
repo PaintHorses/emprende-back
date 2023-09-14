@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 
 const app = express()
 
-const port = process.env.port
+const port = process.env.PORT
 
 const taskSchema = new Schema({
         name: String,
