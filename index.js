@@ -17,7 +17,7 @@ const Task = mongoose.model('Task', taskSchema, 'Tasks')
 
 mongoose.connect(process.env.MONGODB_URL).then(() => { 
     console.log("Conexión a la base de datos: OK")
-}).catch((err) => console.log("Error al conectar a la Base de Datos."))
+}).catch((err) => console.log(`Error al conectar a la Base de Datos: ${err}`))
 
 // midlewares
 app.use(express.static('public'))   // Utilizar archivos estáticos - FRONT END
@@ -72,5 +72,5 @@ app.delete('/api/task/:id', function(req, res) {
 
 app.listen(port, () => {
   console.log(`App listening on port: ${port}`)
-  console.log(`${global}`)
+  console.log(`Puerto: ${global.port}`)
 })
