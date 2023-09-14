@@ -1,4 +1,8 @@
-
+const createEditBtn = document.querySelector("#create-task")
+const input = document.querySelector("#task-name")
+const tasksDIV = document.querySelector("#tasks")
+const baseBackendUrl =  `${window.origin}/api`
+let TASK_TO_EDIT = null
 
 createEditBtn.addEventListener("click", function() {
     const creating = !TASK_TO_EDIT
@@ -55,10 +59,5 @@ function getTasks() {
         }) 
             
 }
-const createEditBtn = document.querySelector("#create-task")
-const input = document.querySelector("#task-name")
-const tasksDIV = document.querySelector("#tasks")
-const baseBackendUrl =  `${window.origin}/api`
-let TASK_TO_EDIT = null
 
 getTasks()
