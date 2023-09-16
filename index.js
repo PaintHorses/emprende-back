@@ -71,5 +71,5 @@ app.delete('/api/task/:id', function(req, res) {
 })
 
 app.listen(port, () => {
-  console.log(`App listening`)
+  console.log(`App listening at port: ${port}`)
 })

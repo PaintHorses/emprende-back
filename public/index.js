@@ -17,6 +17,7 @@ createEditBtn.addEventListener("click", function() {
         getTasks()
         createEditBtn.innerText = 'Crear Tarea'
         input.value = ""
+        TASK_TO_EDIT = null    
     })
 })
 
