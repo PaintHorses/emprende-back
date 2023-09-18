@@ -1,8 +1,9 @@
 require('dotenv').config()
+
 const express = require('express')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
+const transporter = require('./helpers/mailer')
 const app = express()
 
 const port = process.env.PORT
@@ -58,8 +59,6 @@ app.put('/api/task/:id', function(req, res) {
     })
 })
 
-
-
 app.delete('/api/task/:id', function(req, res) {
     const id = req.params.id
     Task.findByIdAndRemove(id).then((deleteTask) => {
@@ -68,6 +67,18 @@ app.delete('/api/task/:id', function(req, res) {
         res.status(400).json({ok: false, message: "Error al eliminar la tarea"})
     })
     
+})
+
+app.post('/api/auth/login/:email/code',async function(req, res) {
+    const { email } = req.params
+    const result = await transporter.sendMail({
+        from: process.env.USER_MAIL,
+        to: email,
+        subject: "Código inicio de sesión",
+        body: "Este es tu código para iniciar sesión:"
+    })
+    console.log(result)
+    res.status(200).json({ok:true, message:"Email enviado correctamente"})
 })
 
 app.listen(port, () => {
