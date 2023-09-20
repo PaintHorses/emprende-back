@@ -11,17 +11,24 @@ const port = process.env.PORT
 const taskSchema = new Schema({
         name: String,
         done: Boolean,
-        //createBy
+})
+
+const userSchema = new Schema({
+    firstName: String,
+    lastName: String,
+    email: String,
+    login_code: String
 })
 
 const Task = mongoose.model('Task', taskSchema, 'Tasks')
+const User = mongoose.model('User', userSchema, 'Users')
 
 mongoose.connect(process.env.MONGODB_URL).then(() => { 
     console.log("Conexión a la base de datos: OK")
 }).catch((err) => console.log(`Error al conectar a la Base de Datos: ${err}`))
 
 // midlewares
-app.use(express.static('public'))   // Utilizar archivos estáticos - FRONT END
+app.use(express.static('public',{extensions: ['html', 'js', 'css']}))   // Utilizar archivos estáticos - FRONT END
 app.use(express.json())             // Solo acepta peticiones Json
 
 app.get('/api/tasks', (req, res) => {
@@ -71,13 +78,28 @@ app.delete('/api/task/:id', function(req, res) {
 
 app.post('/api/auth/login/:email/code',async function(req, res) {
     const { email } = req.params
+
+    const user = User.findOne({ email })
+    if (!user) {
+        return res
+            .status(400)
+            .json("No existe un usuario con ese email")
+    }
+
+    let code = ""
+
+    for (let index = 0; index < 6; index++){
+        let character = Math.ceil(Math.random() * 9)
+        code += character
+    }
+
     const result = await transporter.sendMail({
         from: process.env.USER_MAIL,
         to: email,
         subject: "Código inicio de sesión",
-        body: "Este es tu código para iniciar sesión:"
+        html: `Este es tu código para iniciar sesión: <strong>${ code }</strong>`
     })
-    console.log(result)
+
     res.status(200).json({ok:true, message:"Email enviado correctamente"})
 })
 
