@@ -103,6 +103,20 @@ app.post('/api/auth/login/:email/code',async function(req, res) {
     res.status(200).json({ok:true, message:"Email enviado correctamente"})
 })
 
+app.post('/api/auth/login/:email',async function(req, res) {
+    const { email } = req.params
+    //const { body } = req.params.body
+    console.log(req.body)
+    /* const user = User.findOne({ email: email, login_code: body.login_code })
+    if (!user) {
+        return res
+            .status(400)
+            .json("Email o password incorrecto.")
+    }
+
+    res.status(200).json({ok:true, message:"Inicion de sesión correcto: " + User.firstName}) */
+})
+
 app.listen(port, () => {
   console.log(`App listening at port: ${port}`)
 })
