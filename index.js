@@ -4,6 +4,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const transporter = require('./helpers/mailer')
+const jwt = require('jsonwebtoken')
+
 const app = express()
 
 const port = process.env.PORT
@@ -79,7 +81,7 @@ app.delete('/api/task/:id', function(req, res) {
 app.post('/api/auth/login/:email/code',async function(req, res) {
     const { email } = req.params
 
-    const user = User.findOne({ email })
+    const user = await User.findOne({ email })
     if (!user) {
         return res
             .status(400)
@@ -100,21 +102,34 @@ app.post('/api/auth/login/:email/code',async function(req, res) {
         html: `Este es tu código para iniciar sesión: <strong>${ code }</strong>`
     })
 
+    User.login_code = code
+    await User.updateOne({login_code: code})
+
     res.status(200).json({ok:true, message:"Email enviado correctamente"})
 })
 
 app.post('/api/auth/login/:email',async function(req, res) {
-    const { email } = req.params
-    //const { body } = req.params.body
-    console.log(req.body)
-    /* const user = User.findOne({ email: email, login_code: body.login_code })
-    if (!user) {
-        return res
-            .status(400)
-            .json("Email o password incorrecto.")
-    }
+    try {
+        const { email } = req.params
+        const { code } = req.body
+        console.log({email}, {code})
+        const user = await User.findOne({ email: email, login_code: code })
+        if (!user) {
+            return res
+                .status(400)
+                .json("Email o password incorrecto.")
+        }
+        payload = {
+            _id: user._id,
+            firstName: user.firstName, 
+            email: user.email
+        }
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY)
+        res.status(200).json({ok:true, message:"Inicion de sesión correcto: " + user.firstName})
 
-    res.status(200).json({ok:true, message:"Inicion de sesión correcto: " + User.firstName}) */
+    }catch(err) {
+        console.log(err)
+    }
 })
 
 app.listen(port, () => {
