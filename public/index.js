@@ -6,7 +6,7 @@ let TASK_TO_EDIT = null
 
 createEditBtn.addEventListener("click", function() {
     const creating = !TASK_TO_EDIT
-    const path = creating ? 'task' : `task/${TASK_TO_EDIT._id}`
+    const path = creating ? 'tasks' : `tasks/${TASK_TO_EDIT._id}`
     const method = creating ? 'POST' : 'PUT'
 
     fetch(`${baseBackendUrl}/${path}`, {
@@ -44,7 +44,7 @@ function getTasks() {
                 deleteTaskBtn.addEventListener('click', (e) => {
                     deleteTaskBtn.innerText = '...'
                     const taskId = e.target.id
-                    fetch(`${baseBackendUrl}/task/${taskId}`, {
+                    fetch(`${baseBackendUrl}/tasks/${taskId}`, {
                         method: 'DELETE',   
                     }).then(() => {
                         const taskDIV = deleteTaskBtn.parentElement

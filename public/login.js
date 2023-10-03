@@ -25,7 +25,8 @@ form.addEventListener("submit", async function(e) {
     })
 
     const resJSON = await res.json()
-    console.log(resJSON)
+    window.location.href = "/"
+    //console.log(resJSON)
 
     
 })
