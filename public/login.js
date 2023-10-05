@@ -7,7 +7,15 @@ const url = window.origin
 
 get_code.addEventListener("click", async function (e) {
     e.preventDefault()
-
+    if (!email.value) {
+        Swal.fire({
+            title: 'Aviso!',
+            text: 'Debe introducir un email',
+            icon: 'info',
+            confirmButtonText: 'Ok'
+        })
+        return
+    }
     const res = await fetch(`${url}/api/auth/login/${email.value}/code`, {
         method: 'POST',
     })
@@ -17,7 +25,16 @@ get_code.addEventListener("click", async function (e) {
 
 form.addEventListener("submit", async function(e) {
     e.preventDefault()
-   
+    if (!email.value || !login_code.value) {
+        Swal.fire({
+            title: 'PUPS!',
+            text: 'Debe introducir un email y el código',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        })
+        return
+    }
+
     const res = await fetch(`${url}/api/auth/login/${email.value}`, {
         method: "POST",
         headers: {"Content-Type" : "application/json" },

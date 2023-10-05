@@ -39,7 +39,7 @@ const update =  function(req, res) {
 const remove = function(req, res) {
     const id = req.params.id
     Task.findByIdAndRemove(id).then((deleteTask) => {
-        res.status(200).json({ok: true, message:"Tarea eliminada"})
+        res.status(200).json({ok: true, message:"Tarea eliminada correctamente"})
     }).catch((err) => {
         res.status(400).json({ok: false, message: "Error al eliminar la tarea"})
     })
